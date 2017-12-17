@@ -1,0 +1,139 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.jpmc.spark</groupId>
+  <artifactId>streaming-duplicate-handler</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>streaming-duplicate-handler</name>
+  
+  <properties>
+    <sbt.project.name>examples</sbt.project.name>
+    <build.testJarPhase>none</build.testJarPhase>
+    <build.copyDependenciesPhase>package</build.copyDependenciesPhase>
+    <hadoop.deps.scope>provided</hadoop.deps.scope>
+    <hive.deps.scope>provided</hive.deps.scope>
+    <parquet.deps.scope>provided</parquet.deps.scope>
+    <scala.binary.version>2.11</scala.binary.version>
+       <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+
+  </properties>
+
+  <dependencies>
+  
+  
+
+<!-- https://mvnrepository.com/artifact/org.apache.activemq/activemq-all -->
+<dependency>
+    <groupId>org.apache.activemq</groupId>
+    <artifactId>activemq-all</artifactId>
+    <version>5.15.2</version>
+</dependency>
+
+  
+  <dependency>
+    <groupId>org.elasticsearch</groupId>
+    <artifactId>elasticsearch</artifactId>
+    <version>6.1.0</version>
+	</dependency>
+
+	<dependency>
+    <groupId>org.elasticsearch.client</groupId>
+    <artifactId>transport</artifactId>
+    <version>6.1.0</version>
+	</dependency>
+	
+	<dependency>
+    <groupId>org.apache.logging.log4j</groupId>
+    <artifactId>log4j-core</artifactId>
+    <version>2.9.1</version>
+	</dependency>
+
+    <!-- Prevent our dummy JAR from being included in Spark distributions or uploaded to YARN -->
+    <dependency>
+      <groupId>org.spark-project.spark</groupId>
+      <artifactId>unused</artifactId>
+      <version>1.0.0</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.spark</groupId>
+      <artifactId>spark-core_${scala.binary.version}</artifactId>
+      <version>2.1.0</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.spark</groupId>
+      <artifactId>spark-streaming_${scala.binary.version}</artifactId>
+      <version>2.1.0</version>
+      <scope>provided</scope>
+    </dependency>
+  
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-math3</artifactId>
+      <version>3.4.1</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.scalacheck</groupId>
+      <artifactId>scalacheck_${scala.binary.version}</artifactId>
+      <scope>test</scope>
+      <version>1.13.5</version>
+     </dependency>
+     
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-library</artifactId>
+      <version>2.11.8</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.github.scopt</groupId>
+      <artifactId>scopt_${scala.binary.version}</artifactId>
+      <version>3.7.0</version>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <outputDirectory>target/scala-${scala.binary.version}/classes</outputDirectory>
+    <testOutputDirectory>target/scala-${scala.binary.version}/test-classes</testOutputDirectory>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-install-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <outputDirectory>${jars.target.dir}</outputDirectory>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <profiles>
+    <profile>
+      <id>kinesis-asl</id>
+      <dependencies>
+        <dependency>
+          <groupId>org.apache.spark</groupId>
+          <artifactId>spark-streaming-kinesis-asl_${scala.binary.version}</artifactId>
+          <version>2.1.0</version>
+          <scope>provided</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+  </profiles>
+  
+</project>
